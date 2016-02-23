@@ -1,0 +1,26 @@
+{
+  "name": "modlog",
+  "version": "0.0.1",
+  "description": "a sane module specific logging solution",
+  "main": "src/modlog.js",
+  "scripts": {
+    "test": "NODE_ENV=testing ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nkcmr/modlog.git"
+  },
+  "keywords": [
+    "log",
+    "logging"
+  ],
+  "author": "Nick Comer (@nkcmr)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nkcmr/modlog/issues"
+  },
+  "homepage": "https://github.com/nkcmr/modlog#readme",
+  "devDependencies": {
+    "ava": "^0.12.0"
+  }
+}
