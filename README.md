@@ -19,11 +19,18 @@ the first argument is the modules name and the second argument is an object that
 
 ```javascript
 {
-	logger: console
+  logger: console
 }
 ```
 
 you can set the internal logging mechanism to something else with `logger`, like [winston](https://www.npmjs.com/package/winston) or something. it defaults to the global `console` object.
+
+### todo
+- [ ] formatting string option
+- [ ] console colors
+- [ ] web inspector colors
+- [ ] log focusing (only letting one module through)
+- [ ] write some benchmarks
 
 ### The MIT License (MIT)
 
