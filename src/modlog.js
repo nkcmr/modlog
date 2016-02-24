@@ -10,17 +10,8 @@
 })(this, function () {
   'use strict'
 
+  var is_node = typeof module === 'object' && module.exports
   var levels = ['error', 'warn', 'info', 'debug', 'silly']
-
-  function get_global_arg (arg, _default) {
-    if (typeof window === 'object' && window.hasOwnProperty(arg)) {
-      return window[arg]
-    }
-    if (typeof process === 'object' && process.env.hasOwnProperty(arg)) {
-      return process.env[arg]
-    }
-    return _default
-  }
 
   function defaults (obj, source) {
     if (typeof obj === 'undefined') {
@@ -45,27 +36,43 @@
     var _level = args.shift()
     var _module_name = args.shift()
 
-    if (levels.indexOf(_level) <= get_global_arg('MODLOG_LEVEL', 1)) {
-      var now = new Date()
-      var ts = '[' + pad(now.getHours(), 2) + ':' + pad(now.getMinutes(), 2) + ':' + pad(now.getSeconds(), 2) + ']'
-      if (typeof args[0] === 'string') {
-        args[0] = ts + '[' + _module_name + '] ' + args[0]
-      } else {
-        args.unshift(ts + '[' + _module_name + '] ')
-      }
+    var now = new Date()
+    var ts = '[' + pad(now.getHours(), 2) + ':' + pad(now.getMinutes(), 2) + ':' + pad(now.getSeconds(), 2) + ']'
+    if (typeof args[0] === 'string') {
+      args[0] = ts + '[' + _module_name + '] ' + args[0]
+    } else {
+      args.unshift(ts + '[' + _module_name + '] ')
+    }
+    if (typeof this.options.logger[_level] === 'function') {
+      this.options.logger[_level].apply(this.options.logger, args)
+    }
+  }
+
+  /**
+   * get a default thing to log to. this is so we don't mess with the global `console`
+   *
+   * @return {object}
+   */
+  function get_default_logger () {
+    var _logger = {}
+    for (var idx in levels) {
+      var _level = levels[idx]
       if (_level === 'silly') {
         _level = 'debug'
       }
-      if (typeof this.options.logger[_level] === 'function') {
-        this.options.logger[_level].apply(this.options.logger, args)
+      if (is_node && _level === 'debug') {
+        // node.js does not actuall have console.debug. TIL.
+        _level = 'info'
       }
+      _logger[_level] = console[_level].bind(console)
     }
+    return _logger
   }
 
   return function modlog_factory (module_name, options) {
     var _log = {}
     _log.options = defaults(options, {
-      logger: console
+      logger: get_default_logger()
     })
     for (var idx in levels) {
       _log[levels[idx]] = do_log.bind(_log, levels[idx], module_name)
