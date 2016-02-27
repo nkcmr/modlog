@@ -15,18 +15,16 @@ logs are only useful when you actually know who is saying what. it is easy to ge
 the module consists of a single function that initializes a logger.
 
 #### modlog_factory(module\_name[, options])
-the first argument is the modules name and the second argument is an object that only has one property.
+the first argument is the modules name and the second argument is an object that only has two properties.
 
-```javascript
-{
-  logger: console
-}
-```
-
-you can set the internal logging mechanism to something else with `logger`, like [winston](https://www.npmjs.com/package/winston) or something. it defaults to the global `console` object.
+| option | default | description |
+| --- | --- | --- |
+| `logger` | `global.console` | a way to replace the internal logging mechanism with something like  [winston](https://www.npmjs.com/package/winston). |
+| `format` | `"H:i:s"` | allows for the customization of the timestamp. formatting is almost exactly like PHP's [date](https://secure.php.net/manual/en/function.date.php) function. |
 
 ### todo
-- [ ] formatting string option
+- [x] timestamp formatting option
+- [ ] write unit tests for timestamp formatting
 - [ ] console colors
 - [ ] web inspector colors
 - [ ] log focusing (only letting one module through)
