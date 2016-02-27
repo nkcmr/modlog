@@ -10,6 +10,7 @@
 })(this, function () {
   'use strict'
 
+  var date = require('./date')
   var is_node = typeof module === 'object' && module.exports
   var levels = ['error', 'warn', 'info', 'debug', 'silly']
 
@@ -25,19 +26,12 @@
     return obj
   }
 
-  function pad (num, size) {
-    var s = num + ''
-    while (s.length < size) s = '0' + s
-    return s
-  }
-
   function do_log () {
     var args = [].slice.call(arguments)
     var _level = args.shift()
     var _module_name = args.shift()
 
-    var now = new Date()
-    var ts = '[' + pad(now.getHours(), 2) + ':' + pad(now.getMinutes(), 2) + ':' + pad(now.getSeconds(), 2) + ']'
+    var ts = date('[' + this.options.format + ']')
     if (typeof args[0] === 'string') {
       args[0] = ts + '[' + _module_name + '] ' + args[0]
     } else {
@@ -72,7 +66,8 @@
   return function modlog_factory (module_name, options) {
     var _log = {}
     _log.options = defaults(options, {
-      logger: get_default_logger()
+      logger: get_default_logger(),
+      format: 'H:i:s'
     })
     for (var idx in levels) {
       _log[levels[idx]] = do_log.bind(_log, levels[idx], module_name)
