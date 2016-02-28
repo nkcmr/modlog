@@ -10,7 +10,7 @@
 })(this, function () {
   'use strict'
 
-  var date = require('./date')
+  var date = require('phpdate')
   var is_node = typeof module === 'object' && module.exports
   var levels = ['error', 'warn', 'info', 'debug', 'silly']
 
