@@ -28,6 +28,6 @@
     "standard": "latest"
   },
   "dependencies": {
-    "phpdate": "0.x"
+    "phpdate": "^0.1.0"
   }
 }
