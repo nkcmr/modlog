@@ -28,6 +28,7 @@
     "standard": "latest"
   },
   "dependencies": {
+    "chalk": "^1.1.1",
     "phpdate": "^0.1.0"
   }
 }
