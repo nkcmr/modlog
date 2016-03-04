@@ -24,8 +24,8 @@ the first argument is the modules name and the second argument is an object that
 
 ### todo
 - [x] timestamp formatting option
-- [ ] write unit tests for timestamp formatting
-- [ ] console colors
+- [x] write unit tests for timestamp formatting
+- [x] console colors
 - [ ] web inspector colors
 - [ ] log focusing (only letting one module through)
 - [ ] write some benchmarks
