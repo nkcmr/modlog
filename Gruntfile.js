@@ -14,6 +14,9 @@ module.exports = function (grunt) {
     },
     browserify: {
       dist: {
+        options: {
+          ignore: ['chalk']
+        },
         files: {
           'dist/modlog.js': ['src/modlog.js']
         }
