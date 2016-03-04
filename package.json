@@ -1,6 +1,6 @@
 {
   "name": "modlog",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "a sane module specific logging solution",
   "main": "src/modlog.js",
   "scripts": {
