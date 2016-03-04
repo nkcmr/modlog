@@ -1,4 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+
+},{}],2:[function(require,module,exports){
 /* global define */
 (function (global, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -178,7 +180,7 @@
   return date
 })
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 /* global define */
 (function (global, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -192,8 +194,33 @@
   'use strict'
 
   var date = require('phpdate')
-  var is_node = typeof module === 'object' && module.exports
+  var is_node = typeof window === 'undefined'
   var levels = ['error', 'warn', 'info', 'debug', 'silly']
+  var color_level
+
+  if (is_node) {
+    var chalk = require('chalk')
+  }
+
+  var color_map = {
+    debug: 'green',
+    info: 'blue',
+    warn: 'yellow',
+    error: 'red'
+  }
+
+  if (is_node) {
+    color_level = function (level, msg) {
+      if (!color_map[level]) {
+        return msg
+      }
+      return chalk[color_map[level]](msg)
+    }
+  } else {
+    color_level = function (level, msg) {
+      return msg
+    }
+  }
 
   function defaults (obj, source) {
     if (typeof obj === 'undefined') {
@@ -212,11 +239,14 @@
     var _level = args.shift()
     var _module_name = args.shift()
 
-    var ts = date('[' + this.options.format + ']')
+    var preamble = date('[' + this.options.format + ']') + '[' + _module_name + ']'
+    if (this.options.colors) {
+      preamble = color_level(_level, preamble)
+    }
     if (typeof args[0] === 'string') {
-      args[0] = ts + '[' + _module_name + '] ' + args[0]
+      args[0] = preamble + ' ' + args[0]
     } else {
-      args.unshift(ts + '[' + _module_name + '] ')
+      args.unshift(preamble)
     }
     if (typeof this.options.logger[_level] === 'function') {
       this.options.logger[_level].apply(this.options.logger, args)
@@ -236,7 +266,7 @@
         _level = 'debug'
       }
       if (is_node && _level === 'debug') {
-        // node.js does not actuall have console.debug. TIL.
+        // node.js does not actually have console.debug. TIL.
         _level = 'info'
       }
       _logger[_level] = console[_level].bind(console)
@@ -247,9 +277,12 @@
   return function modlog_factory (module_name, options) {
     var _log = {}
     _log.options = defaults(options, {
-      logger: get_default_logger(),
-      format: 'H:i:s'
+      format: 'H:i:s',
+      colors: true
     })
+    if (!_log.logger) {
+      _log.logger = get_default_logger()
+    }
     for (var idx in levels) {
       _log[levels[idx]] = do_log.bind(_log, levels[idx], module_name)
     }
@@ -257,4 +290,4 @@
   }
 })
 
-},{"phpdate":1}]},{},[2]);
+},{"chalk":1,"phpdate":2}]},{},[3]);
