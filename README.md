@@ -21,6 +21,7 @@ the first argument is the modules name and the second argument is an object that
 | --- | --- | --- |
 | `logger` | `global.console` | a way to replace the internal logging mechanism with something like  [winston](https://www.npmjs.com/package/winston). |
 | `format` | `"H:i:s"` | allows for the customization of the timestamp. formatting is almost exactly like PHP's [date](https://secure.php.net/manual/en/function.date.php) function. |
+| `colors` | `true` | should colors be enabled on the console
 
 ### todo
 - [x] timestamp formatting option

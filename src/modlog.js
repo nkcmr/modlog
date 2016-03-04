@@ -95,7 +95,7 @@
     var _log = {}
     _log.options = defaults(options, {
       format: 'H:i:s',
-      colors: is_node
+      colors: true
     })
     if (!_log.logger) {
       _log.logger = get_default_logger()
