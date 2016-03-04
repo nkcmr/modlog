@@ -11,7 +11,7 @@
   'use strict'
 
   var date = require('phpdate')
-  var is_node = typeof module === 'object' && module.exports
+  var is_node = typeof window === 'undefined'
   var levels = ['error', 'warn', 'info', 'debug', 'silly']
 
   function defaults (obj, source) {
