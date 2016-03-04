@@ -97,8 +97,8 @@
       format: 'H:i:s',
       colors: true
     })
-    if (!_log.logger) {
-      _log.logger = get_default_logger()
+    if (!_log.options.logger) {
+      _log.options.logger = get_default_logger()
     }
     for (var idx in levels) {
       _log[levels[idx]] = do_log.bind(_log, levels[idx], module_name)
